@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import supabase from './supabaseClient.js'; // Arquivo de configuração do Supabase
-
 const app = express();
 
 // Habilitar CORS
@@ -116,7 +115,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 // Iniciar o servidor na porta 3000
-const PORT = 3000;
+const PORT = 'https://precenca-digital-back-end-2998-764x0u399.vercel.app/';
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
