@@ -5,9 +5,14 @@ import supabase from './supabaseClient.js'; // Arquivo de configuração do Supa
 const app = express();
 
 // Habilitar CORS para permitir o acesso a partir do frontend na Vercel
-app.use(cors({
+const corsOptions = {
   origin: 'https://presenca-digital.vercel.app',  // Front-End hospedado na Vercel
-}));
+  methods: 'GET, POST, PUT, DELETE',  // Métodos permitidos
+  allowedHeaders: 'Content-Type, Authorization',  // Cabeçalhos permitidos
+  credentials: true,  // Permite o envio de cookies, se necessário
+};
+
+app.use(cors(corsOptions));
 
 // Middleware para JSON
 app.use(express.json());
@@ -46,6 +51,7 @@ app.get('/api/alunos', async (req, res) => {
 app.post('/api/register', async (req, res) => {
   const { nome, matricula } = req.body;
 
+  // Verificação simples para garantir que o nome e matrícula foram informados
   if (!nome || !matricula) {
     return res.status(400).json({
       success: false,
@@ -53,6 +59,7 @@ app.post('/api/register', async (req, res) => {
     });
   }
 
+  // Verificar se a matrícula tem exatamente 9 caracteres
   if (matricula.length !== 9) {
     return res.status(400).json({
       success: false,
@@ -61,7 +68,7 @@ app.post('/api/register', async (req, res) => {
   }
 
   try {
-    // Verificar se o aluno já existe
+    // Verificar se o aluno já existe no banco de dados (por nome ou matrícula)
     const { data: existingStudent, error } = await supabase
       .from('alunos')
       .select('matricula, nome')
@@ -99,6 +106,7 @@ app.post('/api/register', async (req, res) => {
       });
     }
 
+    // Sucesso no registro
     res.status(201).json({
       success: true,
       message: 'Aluno registrado com sucesso!',
