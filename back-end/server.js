@@ -6,7 +6,7 @@ const app = express();
 
 // Habilitar CORS para permitir o acesso a partir do frontend na Vercel
 const corsOptions = {
-  origin: 'https://presenca-digital-54gpccqf6-andrewluiz2024s-projects.vercel.app/',  // Front-End hospedado na Vercel
+  origin: '3000',  // Front-End hospedado na Vercel
   methods: 'GET, POST, PUT, DELETE',  // Métodos permitidos
   allowedHeaders: 'Content-Type, Authorization',  // Cabeçalhos permitidos
   credentials: true,  // Permite o envio de cookies, se necessário
@@ -122,7 +122,7 @@ app.post('/api/register', async (req, res) => {
 });
 
 // Iniciar o servidor na porta correta para Vercel
-const PORT = process.env.PORT || 3000; // Para rodar corretamente na Vercel
+const PORT = 3000; // Para rodar corretamente na Vercel
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
