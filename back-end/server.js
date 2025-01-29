@@ -4,9 +4,11 @@ import supabase from './supabaseClient.js'; // Arquivo de configuração do Supa
 
 const app = express();
 
+app.use(cors({
+    origin: '*', // Permitir apenas localhost:3000
+  }));
 // Habilitar CORS para permitir o acesso a partir do frontend na Vercel
 const corsOptions = {
-  origin: '3000',  // Front-End hospedado na Vercel
   methods: 'GET, POST, PUT, DELETE',  // Métodos permitidos
   allowedHeaders: 'Content-Type, Authorization',  // Cabeçalhos permitidos
   credentials: true,  // Permite o envio de cookies, se necessário
