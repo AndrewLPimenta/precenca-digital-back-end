@@ -1,11 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import supabase from './supabaseClient.js'; // Arquivo de configuração do Supabase
+
 const app = express();
 
-// Habilitar CORS
+// Habilitar CORS para permitir o acesso a partir do frontend na Vercel
 app.use(cors({
-  origin: 'https://presenca-digital-3oy9.vercel.app/',  // Front-End
+  origin: 'https://presenca-digital.vercel.app',  // Front-End hospedado na Vercel
 }));
 
 // Middleware para JSON
@@ -45,7 +46,6 @@ app.get('/api/alunos', async (req, res) => {
 app.post('/api/register', async (req, res) => {
   const { nome, matricula } = req.body;
 
-  // Verificar se o nome e a matrícula foram informados
   if (!nome || !matricula) {
     return res.status(400).json({
       success: false,
@@ -53,7 +53,6 @@ app.post('/api/register', async (req, res) => {
     });
   }
 
-  // Verificar se a matrícula tem exatamente 9 caracteres
   if (matricula.length !== 9) {
     return res.status(400).json({
       success: false,
@@ -62,7 +61,7 @@ app.post('/api/register', async (req, res) => {
   }
 
   try {
-    // Verificar se o aluno já existe (nome ou matrícula)
+    // Verificar se o aluno já existe
     const { data: existingStudent, error } = await supabase
       .from('alunos')
       .select('matricula, nome')
@@ -114,8 +113,8 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-// Iniciar o servidor na porta 3000
-const PORT = 'https://precenca-digital-back-end-2998-764x0u399.vercel.app/';
+// Iniciar o servidor na porta correta para Vercel
+const PORT = process.env.PORT || 3000; // Para rodar corretamente na Vercel
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
